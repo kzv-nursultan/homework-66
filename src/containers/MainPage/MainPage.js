@@ -1,5 +1,8 @@
 import {React, useState, useEffect} from 'react';
-import axios from 'axios';
+import { nanoid } from 'nanoid'
+import axiosGet from '../../axios-get';
+import withErrorHandler from '../hoc/withErrorHandler';
+import ErrorBoundary from '../../components/ErrorBoundary/ErrorBoundary';
 
 
 const MainPage = () => {
@@ -7,16 +10,30 @@ const MainPage = () => {
 
     useEffect(()=> {
         const fetchData = async () => {
-            const response = await axios.get('');
-            console.log(response);
+            const response = await axiosGet.get('/.json');
+            setResponseData(response.data);
         };
-    });
+        fetchData().catch(console.error);
+    },[]);
+
+    const throwError = () => {
+        throw new Error('Well, this happened.');
+    };
+
 
     return (
-        <>
-        MainPage
-        </>
+        <ErrorBoundary key={nanoid()}>
+        {Object.keys(responseData).map(data=>
+            <div key={data}>
+                <h2>{responseData[data]['title']}</h2>
+                <p>{responseData[data]['content']}</p>
+            </div>
+        )}
+        <button onClick={throwError} className='bg-danger text-white'>
+            Throw error
+        </button>
+        </ErrorBoundary>
     );
 };
 
-export default MainPage;
+export default withErrorHandler( MainPage, axiosGet );

@@ -12,10 +12,6 @@ const Layout = props => {
                     </h2>
                 </div>
 
-                <nav>
-                <NavLink to="/" className="text-white">| Home |</NavLink>
-                </nav>
-
             </header>
 
             <main className="container p-5 m-5">
@@ -27,7 +23,6 @@ const Layout = props => {
                     Created by: 
                     <strong>kzv-nursultan</strong>
                 </span>
-                <NavLink to="/" className="text-white">| Home |</NavLink>
             </footer>
         </>
     );
